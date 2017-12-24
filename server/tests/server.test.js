@@ -1,12 +1,15 @@
 const expect = require('expect');
 const request = require('supertest');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
-const {Todo} = require('./../models/todo');
+const Todo = require('./../models/todo');
 
 const todos = [{
+    _id: new ObjectID(),
     text : 'First test todo'
     }, {
+    _id: new ObjectID(),
     text : 'Second test todo'
     }];
 
@@ -48,7 +51,7 @@ describe('POST /todos', () => {
             .send({ text })
             .expect(400)
             .expect((res) => {
-                expect(res.body.message).toBe("Todo validation failed");
+                expect(res.body._message).toBe("Todo validation failed");
             })
             .end((err, res) => {
                 if (err) {
@@ -75,5 +78,35 @@ describe('GET /todos', () => {
             })
             .end(done);
 
+    });
+});
+
+describe('GET /todos/:id', () => {
+
+    it('should return todo', (done) => {
+
+        request(app)
+            .get(`/todos/${todos[0]._id.toHexString()}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo.text).toBe(todos[0].text)
+            })
+            .end(done)
+    });
+
+    it('should return 404 if todo not found', (done) => {
+
+        request(app)
+            .get(`/todos/${todos[0]._id.toHexString() + "1"}`)
+            .expect(404)
+            .end(done)
+    });
+
+    it('should return 404 for non-object ids', (done) => {
+
+        request(app)
+            .get(`/todos/123`)
+            .expect(404)
+            .end(done)
     });
 });
