@@ -4,7 +4,7 @@ const {mongoose} = require('./../server/db/mongoose');
 const Todo = require('./../server/models/todo');
 const User = require('./../server/models/user');
 
-/*
+
 var id = '5ad3e8b95bf926a311598ebfa';
 
 if(!ObjectID.isValid(id)){
@@ -31,7 +31,7 @@ Todo.findById(id).then((todo) => {
     console.log('Todo by ID', todo)
 }).catch((e) => console.log(e));
 
-*/
+
 
 //User.findbyID
 
