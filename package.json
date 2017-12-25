@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'"
+  },
+  "engines": {
+    "node": "8.4.0"
   },
   "author": "",
   "license": "ISC",
@@ -15,8 +19,8 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
-    "mongoose": "^4.10.8",
-    "npm": "^5.6.0"
+    "npm": "^5.6.0",
+    "mongoose": "latest"
   },
   "devDependencies": {
     "@types/mongoose": "latest",
