@@ -1,3 +1,5 @@
+require('./config/config');
+
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,7 +12,7 @@ var {User} = require('./models/user');
 
 
 var app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -50,7 +52,7 @@ app.get('/todos/:id', (req, res) => {
     }
 
     Todo.findById(_id).then((todo) => {
-        if(!todo){
+        if (!todo) {
             return res.status(404).send();
         }
         res.send({todo})
@@ -70,7 +72,7 @@ app.delete('/todos/:id', (req, res) => {
     }
 
     Todo.findByIdAndRemove(_id).then((todo) => {
-        if(!todo){
+        if (!todo) {
             return res.status(404).send();
         }
         res.send({todo})
@@ -93,16 +95,16 @@ app.patch('/todos/:id', (req, res) => {
         return res.sendStatus(404);
     }
 
-    if(_.isBoolean(body.completed) && body.completed){
+    if (_.isBoolean(body.completed) && body.completed) {
         body.completedAt = new Date().getTime();
     }
-    else{
+    else {
         body.completed = false;
         body.completedAt = null;
     }
 
     Todo.findByIdAndUpdate(_id, {$set: body}, {new: true}).then((todo) => {
-        if(!todo){
+        if (!todo) {
             return res.sendStatus(404);
         }
 
