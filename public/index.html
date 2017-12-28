@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="messageStyle.css">
+    <script src="messageScript.js"></script>
+</head>
+<body>
+
+<section id="messageForm">
+    <h1>Todo List</h1>
+
+
+    <label>Write your message: </label>
+    <textarea placeholder="Your message" id="todoText"></textarea>
+
+    <button id="sendTodo">Submit</button>
+</section>
+
+<section id="messageDisplay">
+    <h1>Your Messages:</h1>
+
+    <div id="messageBox">
+        <p class="msg">This is a default message.</p>
+    </div>
+
+    <button id="changeBorderColor">Change the border color of all messages!</button>
+
+</section>
+</body>
+</html>

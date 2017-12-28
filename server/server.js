@@ -3,6 +3,8 @@ require('./config/config');
 const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require("path");
+
 
 const {ObjectID} = require('mongodb');
 
@@ -16,12 +18,17 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
+app.use(express.static(path.resolve(__dirname, './../public')));
+
 
 // POST
 app.post('/todos', (req, res) => {
     var todo = new Todo({
         text: req.body.text
     });
+
+    console.log(JSON.stringify(req.body));
+
 
     todo.save().then((doc) => {
         res.send(doc);
