@@ -17,22 +17,36 @@ $(document).ready(() => {
 
                 //console.log(todos);
 
+
                 $.each(object.todos, function (index, todo) {
-
-                    var todoText = "<p class='msg'>" + todo.text + "<button type='button' class='btn btn-danger'>Delete</button>" + "</p>";
-
                     //Check if already exist
-                    if($("#messageBox").text().match(todo.text)){
+                    if ($("#messageBox").text().match(todo.text)) {
                         console.log(true);
                     }
-                    else{
+                    else {
                         console.log(false);
+
+                        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
+
+                        var todoText = "<p class='msg'>" + todo.text + button + "</p>";
                         $("#messageBox").append(todoText);
                     }
                 });
-            }
-        });
 
+                var buttons = $('.todoDelete');
+
+
+                $.each(buttons, function (index, btnTodo) {
+
+                    $(btnTodo).click(() => {
+                        console.log(index);
+                    })
+
+                });
+
+            }
+
+        });
     }
 
     $("#todoText").focus(function () {
@@ -70,10 +84,31 @@ $(document).ready(() => {
         $("#messageBox").append(frontendText)
     });
 
+
+    function delete_todo(_id) {
+
+        console.log(_id);
+
+        var data = {};
+        data.id = _id;
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/todos',
+            success: function (data) {
+                console.log('success');
+                console.log(JSON.stringify(data));
+            }
+        });
+
+
+    }
+
+
     const colors = ["yellow", "pink", "red", "green"];
     let index = 0;
-
-
     $("#changeBorderColor").click(() => {
         /*colors.forEach(color => {
             $("#messageBox").css("border", color)
@@ -83,7 +118,6 @@ $(document).ready(() => {
 
         index++;
     });
-
 
     function changeColors() {
         if (index >= colors.length)
