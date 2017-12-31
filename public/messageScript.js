@@ -19,7 +19,7 @@ $(document).ready(() => {
 
                 $.each(object.todos, function (index, todo) {
 
-                    var todoText = "<p class='msg'>" + todo.text + "<button type='button' class='btn btn-default toDoButton'>Basic</button>" + "</p>";
+                    var todoText = "<p class='msg'>" + todo.text + "<button type='button' class='btn btn-danger'>Delete</button>" + "</p>";
 
                     //Check if already exist
                     if($("#messageBox").text().match(todo.text)){
