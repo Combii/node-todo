@@ -2,6 +2,11 @@
 <html>
 <head>
     <title>Todo List</title>
+
+    <!--BootStrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -15,17 +20,16 @@
     <h1>Todo List</h1>
 
 
-    <label>Write your message: </label>
+    <label>Write your todo: </label>
     <textarea placeholder="Your message" id="todoText"></textarea>
 
     <button id="sendTodo">Submit</button>
 </section>
 
 <section id="messageDisplay">
-    <h1>Your Messages:</h1>
+    <h1>Your Todos:</h1>
 
     <div id="messageBox">
-        <p class="msg">This is a default message.</p>
     </div>
 
     <button id="changeBorderColor">Change the border color of all messages!</button>
