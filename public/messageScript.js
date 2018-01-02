@@ -26,6 +26,7 @@ $(document).ready(() => {
                     else {
                         console.log(false);
 
+
                         var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
 
                         var todoText = "<p class='msg'>" + todo.text + button + "</p>";
@@ -38,10 +39,12 @@ $(document).ready(() => {
 
                 var buttons = $('.todoDelete');
                 $.each(buttons, function (index, btnTodo) {
+
                     $(btnTodo).click(() => {
                         delete_todo(object.todos[index]._id);
-                    })
 
+                        $(btnTodo).closest('.msg').remove();
+                    });
                 });
             }
 
@@ -58,10 +61,9 @@ $(document).ready(() => {
         $(this).css("background", "#fff");
     });
 
+    // POST
     $("#sendTodo").click(() => {
         var todoText = $("#todoText").val();
-
-        var frontendText = "<p class='msg'>" + todoText + "</p>";
 
         console.log(todoText);
 
@@ -76,14 +78,16 @@ $(document).ready(() => {
             success: function (data) {
                 console.log('success');
                 console.log(JSON.stringify(data));
+
+
+                get_todos();
             }
         });
 
-
-        $("#messageBox").append(frontendText)
     });
 
 
+    // DELETE
     function delete_todo(_id) {
 
         console.log(_id);
@@ -95,10 +99,10 @@ $(document).ready(() => {
             success: function (data) {
                 console.log('success');
                 console.log(JSON.stringify(data));
+
+                //$("#messageBox").remove(text);
             }
         });
-
-
     }
 
 
