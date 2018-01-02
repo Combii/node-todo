@@ -1,5 +1,8 @@
 $(document).ready(() => {
 
+    var todoList = [];
+
+
     get_todos();
 
     setInterval(get_todos, 10000);
@@ -19,13 +22,16 @@ $(document).ready(() => {
 
 
                 $.each(object.todos, function (index, todo) {
+
+
                     //Check if already exist
-                    if ($("#messageBox").text().match(todo.text)) {
+                    if (todoList.indexOf(todo.text) > -1) {
                         console.log(true);
                     }
                     else {
                         console.log(false);
 
+                        todoList.push(todo.text);
 
                         var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
 
@@ -44,6 +50,8 @@ $(document).ready(() => {
                         delete_todo(object.todos[index]._id);
 
                         $(btnTodo).closest('.msg').remove();
+
+                        todoList.splice(index, 1);
                     });
                 });
             }
