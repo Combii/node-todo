@@ -33,17 +33,16 @@ $(document).ready(() => {
                     }
                 });
 
+
+                //Setup button listeners
+
                 var buttons = $('.todoDelete');
-
-
                 $.each(buttons, function (index, btnTodo) {
-
                     $(btnTodo).click(() => {
-                        console.log(index);
+                        delete_todo(object.todos[index]._id);
                     })
 
                 });
-
             }
 
         });
@@ -89,14 +88,10 @@ $(document).ready(() => {
 
         console.log(_id);
 
-        var data = {};
-        data.id = _id;
-
         $.ajax({
-            type: 'POST',
-            data: JSON.stringify(data),
+            url: '/todos/' + _id,
+            type: 'DELETE',
             contentType: 'application/json',
-            url: '/todos',
             success: function (data) {
                 console.log('success');
                 console.log(JSON.stringify(data));
