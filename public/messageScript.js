@@ -47,11 +47,30 @@ $(document).ready(() => {
                 $.each(buttons, function (index, btnTodo) {
 
                     $(btnTodo).click(() => {
-                        delete_todo(object.todos[index]._id);
 
-                        $(btnTodo).closest('.msg').remove();
 
-                        todoList.splice(index, 1);
+                        var id = object.todos[index]._id;
+
+                        console.log(id);
+
+                        $.ajax({
+                            url: '/todos/' + id,
+                            type: 'DELETE',
+                            contentType: 'application/json',
+                            success: function (data) {
+                                console.log('success');
+                                console.log(JSON.stringify(data));
+
+                                $(btnTodo).closest('.msg').remove();
+                                todoList.splice(index, 1);
+
+                            }
+                        });
+
+
+                        //delete_todo(object.todos[index]._id);
+                        // $(btnTodo).closest('.msg').remove();
+                        // todoList.splice(index, 1);
                     });
                 });
             }
@@ -96,6 +115,7 @@ $(document).ready(() => {
 
 
     // DELETE
+    /*
     function delete_todo(_id) {
 
         console.log(_id);
@@ -112,7 +132,7 @@ $(document).ready(() => {
             }
         });
     }
-
+    */
 
     const colors = ["yellow", "pink", "red", "green"];
     let index = 0;
