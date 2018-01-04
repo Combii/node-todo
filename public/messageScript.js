@@ -85,19 +85,49 @@ $(document).ready(() => {
             var check = false;
             if (!localTodoList[index].buttonListenerCompleted) {
                 $(completedButton).click(() => {
+                    var returnData = {};
+
 
                     if (!check) {
                         check = true;
                         $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
                         console.log(true);
+
+                        returnData.completed = true;
+
+                        patchData(localTodoList[index].id, returnData)
+
                     }
                     else {
                         check = false;
                         $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
                         console.log(false);
+
+                        returnData.completed = false;
+
+                        patchData(localTodoList[index].id, returnData)
                     }
                 });
                 localTodoList[index].buttonListenerCompleted = true;
+            }
+        });
+    }
+
+    // PATCH
+    function patchData(id, data) {
+
+        console.log(id, data);
+
+        $.ajax({
+            type: 'PATCH',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/todos/' + id,
+            success: function (data) {
+                console.log('success');
+                console.log(JSON.stringify(data));
+
+                get_todos();
             }
         });
     }
