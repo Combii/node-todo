@@ -1,110 +1,115 @@
 $(document).ready(() => {
 
-    var todoList = [];
-
+    var localTodoList = [];
 
     get_todos();
 
-    setInterval(get_todos, 10000);
+    setInterval(get_todos, 5000);
 
-
+    // GET
     function get_todos() {
-
-        //console.log($("#messageBox").length);
-
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
             url: '/todos',
             success: function (object) {
+                setup_todos(object.todos);
+            }
+        });
+    }
 
-                //console.log(todos);
+    function setup_todos(todoList) {
+
+        $.each(todoList, function (index, todo) {
+            if (searchList(todo._id) === null) {
+                localTodoList.push({
+                    id: todo._id,
+                    text: todo.text,
+                    buttonListenerDelete: false,
+                    buttonListenerCompleted: false
+                });
+                setupTodoFrontend(localTodoList[localTodoList.length - 1]);
+                setupButtonListeners()
+            }
+        });
+    }
+
+    function setupTodoFrontend(todo) {
+
+        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
+        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+
+        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
+        $("#messageBox").append(todoText);
+    }
+
+    function setupButtonListeners() {
+        //Setup button listeners
+        var buttons = $('.todoDelete');
+
+        $.each(buttons, function (index, btnTodo) {
+
+            var id = localTodoList[index].id;
+
+            if (!localTodoList[index].buttonListenerDelete) {
+                $(btnTodo).click(() => {
+                    $.ajax({
+                        url: '/todos/' + id,
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+
+                            $(btnTodo).closest('.msg').remove();
+                            localTodoList.splice(index, 1);
+                        }
+                    });
+                });
+                localTodoList[index].buttonListenerDelete = true;
+            }
+        });
 
 
-                $.each(object.todos, function (index, todo) {
+        //Setup checkbox listeners
+        var completedButtons = $('.completedButton');
+        $.each(completedButtons, function (index, completedButton) {
 
+            var check = false;
+            if (!localTodoList[index].buttonListenerCompleted) {
+                $(completedButton).click(() => {
 
-                    //Check if already exist
-                    if (todoList.indexOf(todo.text) > -1) {
-                        //console.log(true);
+                    if (!check) {
+                        check = true;
+                        $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
+                        console.log(true);
                     }
                     else {
-                        //console.log(false);
-
-                        todoList.push(todo.text);
-
-                        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
-                        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
-
-                        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
-                        $("#messageBox").append(todoText);
-
-
-
-                        //Setup button listeners
-
-                        var buttons = $('.todoDelete');
-                        $.each(buttons, function (index, btnTodo) {
-
-                            $(btnTodo).click(() => {
-
-
-                                var id = object.todos[index]._id;
-
-                                console.log(id);
-
-                                $.ajax({
-                                    url: '/todos/' + id,
-                                    type: 'DELETE',
-                                    contentType: 'application/json',
-                                    success: function (data) {
-                                        console.log('success');
-                                        console.log(JSON.stringify(data));
-
-                                        $(btnTodo).closest('.msg').remove();
-                                        todoList.splice(index, 1);
-
-                                    }
-                                });
-
-
-                                //delete_todo(object.todos[index]._id);
-                                // $(btnTodo).closest('.msg').remove();
-                                // todoList.splice(index, 1);
-                            });
-                        });
-
-
-                        //Setup checkbox listeners
-
-                        var completedButtons = $('.completedButton');
-                        $.each(completedButtons, function (index, completedButton) {
-
-                            var check = false;
-
-                            $(completedButton).click(() => {
-
-                                if (!check)
-                                {
-                                    check = true;
-                                    console.log(true);
-
-                                    $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
-                                }
-                                else{
-                                    check = false;
-                                    console.log(false);
-
-                                    $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
-                                }
-                            });
-                        });
-
+                        check = false;
+                        $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
+                        console.log(false);
                     }
                 });
+                localTodoList[index].buttonListenerCompleted = true;
             }
-
         });
+    }
+
+    function searchList(object) {
+
+        var todo = null;
+
+        $.each(localTodoList, function (index, todoLocal) {
+            if (todoLocal.id === object) {
+                todo = todoLocal;
+                return false;
+            }
+            else if (todoLocal.text === object) {
+                todo = todoLocal;
+                return false;
+            }
+        });
+        return todo;
     }
 
     $("#todoText").focus(function () {
@@ -183,3 +188,84 @@ $(document).ready(() => {
     }
 
 });
+
+
+/*
+  $.each(object.todos, function (index, todo) {
+
+
+                    //Check if already exist
+                    if (todoList.indexOf(todo.text) > -1) {
+                        //console.log(true);
+                    }
+                    else {
+                        //console.log(false);
+
+                        todoList.push(todo.text);
+
+                        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
+                        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+
+                        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
+                        $("#messageBox").append(todoText);
+
+
+
+                        //Setup button listeners
+                        var buttons = $('.todoDelete');
+                        $.each(buttons, function (index, btnTodo) {
+
+                            $(btnTodo).click(() => {
+
+
+                                var id = object.todos[index]._id;
+
+                                console.log(id);
+
+                                $.ajax({
+                                    url: '/todos/' + id,
+                                    type: 'DELETE',
+                                    contentType: 'application/json',
+                                    success: function (data) {
+                                        console.log('success');
+                                        console.log(JSON.stringify(data));
+
+                                        $(btnTodo).closest('.msg').remove();
+                                        todoList.splice(index, 1);
+
+                                    }
+                                });
+                            });
+                        });
+
+
+                        //Setup checkbox listeners
+                        var completedButtons = $('.completedButton');
+                        $.each(completedButtons, function (index, completedButton) {
+
+
+
+
+                            var check = false;
+
+                            $(completedButton).click(() => {
+
+                                if (!check)
+                                {
+                                    check = true;
+                                    //console.log(true);
+
+                                    $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
+                                }
+                                else{
+                                    check = false;
+                                    //console.log(false);
+
+                                    $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
+                                }
+                            });
+                        });
+
+                    }
+                });
+ */
