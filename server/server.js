@@ -90,7 +90,7 @@ app.delete('/todos/:id', (req, res) => {
 
 });
 
-// Update todos/:id
+// PATCH Update todos/:id
 app.patch('/todos/:id', (req, res) => {
 
     var _id = req.params.id;
