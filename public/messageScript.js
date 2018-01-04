@@ -32,6 +32,7 @@ $(document).ready(() => {
                 localTodoList.push({
                     id: todo._id,
                     text: todo.text,
+                    completed: todo.completed,
                     buttonListenerDelete: false,
                     buttonListenerCompleted: false
                 });
@@ -44,7 +45,14 @@ $(document).ready(() => {
     function setupTodoFrontend(todo) {
 
         var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
-        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+
+        var completedButton = "";
+
+        if(!todo.completed)
+            completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+        else
+            completedButton = "<button type='button' class='btn btn-success completedButton'>True</button>";
+
 
         var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
         $("#messageBox").append(todoText);
@@ -82,14 +90,12 @@ $(document).ready(() => {
         var completedButtons = $('.completedButton');
         $.each(completedButtons, function (index, completedButton) {
 
-            var check = false;
             if (!localTodoList[index].buttonListenerCompleted) {
                 $(completedButton).click(() => {
                     var returnData = {};
 
 
-                    if (!check) {
-                        check = true;
+                    if (!localTodoList[index].completed) {
                         $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
                         console.log(true);
 
@@ -99,7 +105,6 @@ $(document).ready(() => {
 
                     }
                     else {
-                        check = false;
                         $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
                         console.log(false);
 
