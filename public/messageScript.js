@@ -20,8 +20,6 @@ $(document).ready(() => {
 
     function setup_todos(todoList) {
 
-        console.log(localTodoList);
-
         $.each(todoList, function (index, todo) {
             if (searchList(todo._id) === null) {
                 localTodoList.push({
@@ -72,26 +70,29 @@ $(document).ready(() => {
             }
         });
 
-        /*
-                //Setup checkbox listeners
-                var completedButtons = $('.completedButton');
-                $.each(completedButtons, function (index, completedButton) {
 
-                    var check = false;
+        //Setup checkbox listeners
+        var completedButtons = $('.completedButton');
+        $.each(completedButtons, function (index, completedButton) {
 
-                    $(completedButton).click(() => {
+            var check = false;
+            if (!localTodoList[index].buttonListenerCompleted) {
+                $(completedButton).click(() => {
 
-                        if (!check) {
-                            check = true;
-                            $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
-                        }
-                        else {
-                            check = false;
-                            $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
-                        }
-                    });
+                    if (!check) {
+                        check = true;
+                        $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
+                        console.log(true);
+                    }
+                    else {
+                        check = false;
+                        $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
+                        console.log(false);
+                    }
                 });
-        */
+                localTodoList[index].buttonListenerCompleted = true;
+            }
+        });
     }
 
     function searchList(object) {
