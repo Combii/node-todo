@@ -66,11 +66,6 @@ $(document).ready(() => {
 
                                     }
                                 });
-
-
-                                //delete_todo(object.todos[index]._id);
-                                // $(btnTodo).closest('.msg').remove();
-                                // todoList.splice(index, 1);
                             });
                         });
 
