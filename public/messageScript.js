@@ -8,7 +8,6 @@ $(document).ready(() => {
 
     // GET
     function get_todos() {
-        console.log("GET");
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
