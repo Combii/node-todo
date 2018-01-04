@@ -8,6 +8,7 @@ $(document).ready(() => {
 
     // GET
     function get_todos() {
+        console.log("GET");
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
@@ -19,6 +20,13 @@ $(document).ready(() => {
     }
 
     function setup_todos(todoList) {
+
+        if(todoList.length < localTodoList.length){
+            console.log("Online: " + todoList.length);
+            console.log("Local: " + localTodoList.length);
+            localTodoList = [];
+            $("#messageBox").empty();
+        }
 
         $.each(todoList, function (index, todo) {
             if (searchList(todo._id) === null) {
