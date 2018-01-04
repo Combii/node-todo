@@ -1,105 +1,62 @@
 $(document).ready(() => {
 
-    var todoList = [];
-
+    var localTodoList = [];
 
     get_todos();
 
-    setInterval(get_todos, 10000);
+    setInterval(get_todos, 5000);
 
-
+    // GET
     function get_todos() {
 
-        //console.log($("#messageBox").length);
 
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
             url: '/todos',
             success: function (object) {
-
-                //console.log(todos);
-
-
-                $.each(object.todos, function (index, todo) {
-
-
-                    //Check if already exist
-                    if (todoList.indexOf(todo.text) > -1) {
-                        //console.log(true);
-                    }
-                    else {
-                        //console.log(false);
-
-                        todoList.push(todo.text);
-
-                        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
-                        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
-
-                        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
-                        $("#messageBox").append(todoText);
-
-
-
-                        //Setup button listeners
-
-                        var buttons = $('.todoDelete');
-                        $.each(buttons, function (index, btnTodo) {
-
-                            $(btnTodo).click(() => {
-
-
-                                var id = object.todos[index]._id;
-
-                                console.log(id);
-
-                                $.ajax({
-                                    url: '/todos/' + id,
-                                    type: 'DELETE',
-                                    contentType: 'application/json',
-                                    success: function (data) {
-                                        console.log('success');
-                                        console.log(JSON.stringify(data));
-
-                                        $(btnTodo).closest('.msg').remove();
-                                        todoList.splice(index, 1);
-
-                                    }
-                                });
-                            });
-                        });
-
-
-                        //Setup checkbox listeners
-
-                        var completedButtons = $('.completedButton');
-                        $.each(completedButtons, function (index, completedButton) {
-
-                            var check = false;
-
-                            $(completedButton).click(() => {
-
-                                if (!check)
-                                {
-                                    check = true;
-                                    console.log(true);
-
-                                    $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
-                                }
-                                else{
-                                    check = false;
-                                    console.log(false);
-
-                                    $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
-                                }
-                            });
-                        });
-
-                    }
-                });
+                setup_todos(object.todos);
             }
 
         });
+    }
+
+    function setup_todos(todoList) {
+
+        console.log(localTodoList);
+
+        $.each(todoList, function (index, todo) {
+
+            if (!searchList(todo._id)) {
+                localTodoList.push({
+                    id: todo._id,
+                    text: todo.text
+                });
+                console.log(true);
+            }
+            else
+                console.log(false);
+
+        });
+    }
+
+    function searchList(object) {
+
+        var check = false;
+
+        //if(localTodoList.length === 0) return false;
+
+        $.each(localTodoList, function (index, todoLocal) {
+            if (todoLocal.id === object){
+                check = true;
+                return false;
+            }
+            else if (todoLocal.text === object) {
+                check = true;
+                return false;
+            }
+        });
+        return check;
     }
 
     $("#todoText").focus(function () {
@@ -178,3 +135,84 @@ $(document).ready(() => {
     }
 
 });
+
+
+/*
+  $.each(object.todos, function (index, todo) {
+
+
+                    //Check if already exist
+                    if (todoList.indexOf(todo.text) > -1) {
+                        //console.log(true);
+                    }
+                    else {
+                        //console.log(false);
+
+                        todoList.push(todo.text);
+
+                        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
+                        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+
+                        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
+                        $("#messageBox").append(todoText);
+
+
+
+                        //Setup button listeners
+                        var buttons = $('.todoDelete');
+                        $.each(buttons, function (index, btnTodo) {
+
+                            $(btnTodo).click(() => {
+
+
+                                var id = object.todos[index]._id;
+
+                                console.log(id);
+
+                                $.ajax({
+                                    url: '/todos/' + id,
+                                    type: 'DELETE',
+                                    contentType: 'application/json',
+                                    success: function (data) {
+                                        console.log('success');
+                                        console.log(JSON.stringify(data));
+
+                                        $(btnTodo).closest('.msg').remove();
+                                        todoList.splice(index, 1);
+
+                                    }
+                                });
+                            });
+                        });
+
+
+                        //Setup checkbox listeners
+                        var completedButtons = $('.completedButton');
+                        $.each(completedButtons, function (index, completedButton) {
+
+
+
+
+                            var check = false;
+
+                            $(completedButton).click(() => {
+
+                                if (!check)
+                                {
+                                    check = true;
+                                    //console.log(true);
+
+                                    $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
+                                }
+                                else{
+                                    check = false;
+                                    //console.log(false);
+
+                                    $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
+                                }
+                            });
+                        });
+
+                    }
+                });
+ */
