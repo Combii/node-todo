@@ -8,8 +8,6 @@ $(document).ready(() => {
 
     // GET
     function get_todos() {
-
-
         $.ajax({
             type: 'GET',
             contentType: 'application/json',
@@ -17,7 +15,6 @@ $(document).ready(() => {
             success: function (object) {
                 setup_todos(object.todos);
             }
-
         });
     }
 
@@ -26,37 +23,92 @@ $(document).ready(() => {
         console.log(localTodoList);
 
         $.each(todoList, function (index, todo) {
-
-            if (!searchList(todo._id)) {
+            if (searchList(todo._id) === null) {
                 localTodoList.push({
                     id: todo._id,
-                    text: todo.text
+                    text: todo.text,
+                    buttonListenerDelete: false,
+                    buttonListenerCompleted: false
                 });
-                console.log(true);
+                setupTodoFrontend(localTodoList[localTodoList.length - 1]);
+                setupButtonListeners()
             }
-            else
-                console.log(false);
-
         });
+    }
+
+    function setupTodoFrontend(todo) {
+
+        var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
+        var completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
+
+        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
+        $("#messageBox").append(todoText);
+    }
+
+    function setupButtonListeners() {
+        //Setup button listeners
+        var buttons = $('.todoDelete');
+
+        $.each(buttons, function (index, btnTodo) {
+
+            var id = localTodoList[index].id;
+
+            if (!localTodoList[index].buttonListenerDelete) {
+                $(btnTodo).click(() => {
+                    $.ajax({
+                        url: '/todos/' + id,
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+
+                            $(btnTodo).closest('.msg').remove();
+                            localTodoList.splice(index, 1);
+                        }
+                    });
+                });
+                localTodoList[index].buttonListenerDelete = true;
+            }
+        });
+
+        /*
+                //Setup checkbox listeners
+                var completedButtons = $('.completedButton');
+                $.each(completedButtons, function (index, completedButton) {
+
+                    var check = false;
+
+                    $(completedButton).click(() => {
+
+                        if (!check) {
+                            check = true;
+                            $(completedButton).closest('.completedButton').removeClass('btn-default').addClass('btn-success').text('True');
+                        }
+                        else {
+                            check = false;
+                            $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
+                        }
+                    });
+                });
+        */
     }
 
     function searchList(object) {
 
-        var check = false;
-
-        //if(localTodoList.length === 0) return false;
+        var todo = null;
 
         $.each(localTodoList, function (index, todoLocal) {
-            if (todoLocal.id === object){
-                check = true;
+            if (todoLocal.id === object) {
+                todo = todoLocal;
                 return false;
             }
             else if (todoLocal.text === object) {
-                check = true;
+                todo = todoLocal;
                 return false;
             }
         });
-        return check;
+        return todo;
     }
 
     $("#todoText").focus(function () {
