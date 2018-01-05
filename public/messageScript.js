@@ -101,8 +101,9 @@ $(document).ready(() => {
 
                         returnData.completed = true;
 
-                        patchData(localTodoList[index].id, returnData)
+                        patchData(localTodoList[index].id, returnData);
 
+                        localTodoList[index].completed = true;
                     }
                     else {
                         $(completedButton).closest('.completedButton').removeClass('btn-success').addClass('btn-default').text('False');
@@ -110,7 +111,9 @@ $(document).ready(() => {
 
                         returnData.completed = false;
 
-                        patchData(localTodoList[index].id, returnData)
+                        patchData(localTodoList[index].id, returnData);
+
+                        localTodoList[index].completed = false;
                     }
                 });
                 localTodoList[index].buttonListenerCompleted = true;
