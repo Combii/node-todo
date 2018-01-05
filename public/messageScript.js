@@ -33,6 +33,7 @@ $(document).ready(() => {
                     id: todo._id,
                     text: todo.text,
                     completed: todo.completed,
+                    completedAt: todo.completedAt,
                     buttonListenerDelete: false,
                     buttonListenerCompleted: false
                 });
@@ -46,15 +47,17 @@ $(document).ready(() => {
 
         var button = "<button type='button' class='btn btn-danger todoDelete'>Delete</button>";
 
-        var completedButton = "";
+        var completedButton, todoText = "";
 
-        if(!todo.completed)
+        if (!todo.completed) {
             completedButton = "<button type='button' class='btn btn-default completedButton'>False</button>";
-        else
+            todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
+        }
+        else {
             completedButton = "<button type='button' class='btn btn-success completedButton'>True</button>";
+            todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "<br>" + new Date(todo.completedAt).toLocaleString() + "</p>";
+        }
 
-
-        var todoText = "<p class='msg'>" + todo.text + " " + button + " " + completedButton + "</p>";
         $("#messageBox").append(todoText);
     }
 
