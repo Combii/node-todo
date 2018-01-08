@@ -31,9 +31,11 @@ $(document).ready(function () {
     }
 
     function setupTodoFrontend(todo) {
+        if(!todo.completed)
+            $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + todo.text + "<a class='remove'>x</a><hr></li>");
 
-        $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + todo.text + "<a class='remove'>x</a><hr></li>");
-
+        else
+            $("#list-items").append("<li class='completed'><input class='checkbox' type='checkbox' checked/>" + todo.text + "<a class='remove'>x</a><hr></li>");
     }
 
     function searchList(object) {
@@ -81,10 +83,6 @@ $(document).ready(function () {
         }
     });
 
-    /*$(".checkbox").change(function () {
-        console.log('Checkbox checked');
-    })*/
-
     // Checkbox
     $(document).on("change", ".checkbox", function () {
 
@@ -102,7 +100,7 @@ $(document).ready(function () {
         else {
             returnData.completed = false;
 
-            patchData(searchList(todoText).id);
+            patchData(searchList(todoText).id, returnData);
             console.log(false);
         }
 
