@@ -1,39 +1,26 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Todo List</title>
-
-    <!--BootStrap-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="messageStyle.css">
-    <script src="messageScript.js"></script>
-</head>
-<body>
-
-<section id="messageForm">
-    <h1>Todo List</h1>
-
-
-    <label>Write your todo: </label>
-    <textarea placeholder="Your message" id="todoText"></textarea>
-
-    <button id="sendTodo">Submit</button>
-</section>
-
-<section id="messageDisplay">
-    <h1>Your Todos:</h1>
-
-    <div id="messageBox">
-    </div>
-
-    <button id="changeBorderColor">Change the border color of all messages!</button>
-
-</section>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Simple Todo List</title>
+        <!-- CSS -->
+        <link rel="stylesheet" href="styles.css">
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Things I've Gotta Get Done</h1>
+            <ul id="list-items">
+            <!-- Here's where out todo list items will go! -->
+            </ul>
+            <form class="add-items">
+                <input type="text" class="form-control" id="todo-list-item" placeholder="What do you need to do today?">
+                <button class="add" type="submit">Add to List</button>
+            </form>
+        </div>
+    </body>
 </html>
