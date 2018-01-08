@@ -4,6 +4,8 @@ $(document).ready(function () {
 
     get_todos();
 
+    
+
     function get_todos() {
         $.ajax({
             type: 'GET',
@@ -14,7 +16,6 @@ $(document).ready(function () {
             }
         });
     }
-
 
     function setup_todos(todoList) {
 
@@ -36,7 +37,6 @@ $(document).ready(function () {
         $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + todo.text + "<a class='remove'>x</a><hr></li>");
 
     }
-
 
     function searchList(object) {
 
@@ -61,6 +61,21 @@ $(document).ready(function () {
         if (item.trim() !== "") {
             $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + item + "<a class='remove'>x</a><hr></li>")
             $("#todo-list-item").val("");
+
+
+            var data = {};
+            data.text = item;
+
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: '/todos',
+                success: function (data) {
+                    console.log('success');
+                    console.log(JSON.stringify(data));
+                }
+            });
         }
     });
 
