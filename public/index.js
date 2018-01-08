@@ -4,8 +4,6 @@ $(document).ready(function () {
 
     get_todos();
 
-    
-
     function get_todos() {
         $.ajax({
             type: 'GET',
@@ -47,6 +45,10 @@ $(document).ready(function () {
                 todo = todoLocal;
                 return false;
             }
+            else if (todoLocal.text === object) {
+                todo = todoLocal;
+                return false;
+            }
         });
         return todo;
     }
@@ -55,11 +57,11 @@ $(document).ready(function () {
     // POST
     $(".add-items").submit(function (event) {
         event.preventDefault();
-        //console.log('test');
+
         var item = $("#todo-list-item").val();
 
         if (item.trim() !== "") {
-            $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + item + "<a class='remove'>x</a><hr></li>")
+            $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + item + "<a class='remove'>x</a><hr></li>");
             $("#todo-list-item").val("");
 
 
@@ -103,7 +105,28 @@ $(document).ready(function () {
     // DELETE
     $(document).on("click", ".remove", function () {
 
+        var todoText = $(this).parent().text();
+
+        todoText = todoText.substring(0, todoText.length - 1);
+
+        console.log(todoText);
+
+        var id = searchList(todoText).id;
+
         $(this).parent().remove();
+
+        console.log(id);
+
+        $.ajax({
+            url: '/todos/' + id,
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function (data) {
+                console.log('success');
+                console.log(JSON.stringify(data));
+                //localTodoList.splice(index, 1);
+            }
+        });
 
     });
 });
