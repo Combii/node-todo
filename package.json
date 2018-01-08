@@ -20,16 +20,16 @@
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.33",
-    "mongoose": "latest",
+    "mongoose": "^4.13.8",
     "npm": "^5.6.0"
   },
   "devDependencies": {
-    "@types/mongoose": "latest",
+    "@types/expect": "latest",
+    "@types/mongoose": "^4.7.31",
+    "@types/supertest": "latest",
     "expect": "^1.20.2",
     "mocha": "^3.5.3",
     "nodemon": "^1.14.3",
-    "supertest": "^2.0.1",
-    "@types/expect": "latest",
-    "@types/supertest": "latest"
+    "supertest": "^2.0.1"
   }
 }
