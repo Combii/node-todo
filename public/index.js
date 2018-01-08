@@ -85,28 +85,51 @@ $(document).ready(function () {
         console.log('Checkbox checked');
     })*/
 
-    // PATCH
+    // Checkbox
     $(document).on("change", ".checkbox", function () {
 
+        var todoText = $(this).parent().text();
+        todoText = todoText.substring(0, todoText.length - 1);
+
+        var returnData = {};
+
         if ($(this).is(':checked')) {
+            returnData.completed = true;
+
+            patchData(searchList(todoText).id, returnData);
             console.log(true);
         }
-        else
-            console.log(false);
+        else {
+            returnData.completed = false;
 
+            patchData(searchList(todoText).id);
+            console.log(false);
+        }
 
         $(this).parent().toggleClass("completed");
-
-
-        //Get text
-        //console.log($(this).parent().text());
     });
+
+    // PATCH
+    function patchData(id, data) {
+
+        console.log(id, data);
+
+        $.ajax({
+            type: 'PATCH',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            url: '/todos/' + id,
+            success: function (data) {
+                console.log('success');
+                console.log(JSON.stringify(data));
+            }
+        });
+    }
 
     // DELETE
     $(document).on("click", ".remove", function () {
 
         var todoText = $(this).parent().text();
-
         todoText = todoText.substring(0, todoText.length - 1);
 
         console.log(todoText);
