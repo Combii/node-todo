@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     get_todos();
 
-    setInterval(get_todos, 5000);
+    setInterval(get_todos, 10000);
 
     function get_todos() {
         $.ajax({
