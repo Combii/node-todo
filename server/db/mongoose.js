@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
+//Setup for promise use instead of callbacks
+//mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI);
 
 module.exports = {
