@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     get_todos();
 
-    setInterval(get_todos, 10000);
+    setInterval(get_todos, 5000);
 
     function get_todos() {
         $.ajax({
@@ -65,9 +65,7 @@ $(document).ready(function () {
         var item = $("#todo-list-item").val();
 
         if (item.trim() !== "") {
-            $("#list-items").append("<li><input class='checkbox' type='checkbox'/>" + item + "<a class='remove'>x</a><hr></li>");
             $("#todo-list-item").val("");
-
 
             var data = {};
             data.text = item;
@@ -80,6 +78,7 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log('success');
                     console.log(JSON.stringify(data));
+                    get_todos();
                 }
             });
         }
